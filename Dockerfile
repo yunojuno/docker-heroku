@@ -33,7 +33,6 @@ RUN echo "===> Installing Python $PYTHON_VERSION" \
         wget \
         xz-utils \
         zlib1g-dev \
-        zlib1g-dev \
 
     && echo "---> Downloading source files for Python $PYTHON_VERSION" \
     && cd /tmp \
