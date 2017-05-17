@@ -1,14 +1,22 @@
-FROM heroku/heroku:16
+# Dockfile for building an image based on the Heroku16 base with
+# a specific Python runtime included.
+FROM heroku/heroku:16-build
 
 LABEL maintainer "YunoJuno <code@yunojuno.com>"
 
 # default - can be overridden to build custom images
 ARG PYTHON_VERSION=2.7.13
 
-RUN echo "===> Installing Python $PYTHON_VERSION" \
-    && echo "Installing prerequisites" \
-    && apt-get update \
-    && apt-get install -y \
+WORKDIR /tmp
+
+RUN apt-get update && \
+
+    # remove the current system python
+    apt-get -y purge python2.7-minimal && \
+
+    # re-install packages required to build python and python
+    # extensions that may be loaded in subsequent images.
+    apt-get install -y \
         build-essential \
         libbz2-dev \
         libexpat1-dev \
@@ -16,39 +24,29 @@ RUN echo "===> Installing Python $PYTHON_VERSION" \
         liblzma-dev \
         libmemcached-dev \
         libncurses5-dev \
-        libncursesw5-dev \
         libnss3-dev \
         libpq-dev \
-        libreadline-dev \
         libreadline6 \
         libreadline6-dev \
         libsqlite3-dev \
         libssl-dev \
-        llvm \
-        make \
         mercurial \
         python-dev \
-        tk-dev \
         tk8.5-dev \
-        wget \
-        xz-utils \
-        zlib1g-dev \
+        zlib1g-dev && \
 
-    && echo "---> Downloading source files for Python $PYTHON_VERSION" \
-    && cd /tmp \
-    && wget http://python.org/ftp/python/$PYTHON_VERSION/Python-$PYTHON_VERSION.tgz \
-    && wget https://bootstrap.pypa.io/get-pip.py \
-    && tar -xvf Python-$PYTHON_VERSION.tgz \
-    && cd Python-$PYTHON_VERSION \
+    # re-install the correct version of python from source
+    wget http://python.org/ftp/python/${PYTHON_VERSION}/Python-${PYTHON_VERSION}.tgz && \
+    tar -xvf Python-${PYTHON_VERSION}.tgz && \
+    cd Python-${PYTHON_VERSION} && \
+    ./configure && \
+    make && \
+    make install && \
+    python -m ensurepip --upgrade && \
 
-    && echo "---> Building Python from source" \
-    && ./configure \
-    && make \
-    && make install \
-    && python /tmp/get-pip.py \
+    # and some basic cleanup
+    apt-get autoclean && \
+    rm -rf /var/lib/apt/lists/* && \
+    rm -rf /tmp/*
 
-    # cleanup
-    && apt-get autoremove -y \
-    && apt-get clean all \
-    && rm -rf /var/lib/apt/lists/* \
-    && rm -rf /tmp/*
+ENTRYPOINT ["/bin/bash"]
