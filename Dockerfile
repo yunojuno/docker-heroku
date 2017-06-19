@@ -4,9 +4,6 @@ FROM heroku/heroku:16-build
 
 LABEL maintainer "YunoJuno <code@yunojuno.com>"
 
-# default - can be overridden to build custom images
-ARG PYTHON_VERSION=2.7.13
-
 WORKDIR /tmp
 
 RUN apt-get update && \
@@ -36,14 +33,11 @@ RUN apt-get update && \
         tk8.5-dev \
         zlib1g-dev && \
 
-    # re-install the correct version of python from source
-    wget http://python.org/ftp/python/${PYTHON_VERSION}/Python-${PYTHON_VERSION}.tgz && \
-    tar -xvf Python-${PYTHON_VERSION}.tgz && \
-    cd Python-${PYTHON_VERSION} && \
-    ./configure && \
-    make && \
-    make install && \
-    python -m ensurepip --upgrade && \
+    # install pyenv
+    git clone https://github.com/pyenv/pyenv.git ~/.pyenv
+    echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ~/.bashrc
+    echo 'export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.bashrc
+    echo 'eval "$(pyenv init -)"' >> ~/.bashrc
 
     # and some basic cleanup
     apt-get autoclean && \
