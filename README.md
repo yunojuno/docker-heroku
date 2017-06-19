@@ -23,7 +23,9 @@ LABEL maintainer "YunoJuno <code@yunojuno.com>"
 
 ADD requirements.txt /tmp
 
-RUN pip install -r /tmp/requirements.txt
+RUN pyenv install 2.7.13 && \
+    pyenv local 2.7.13 && \
+    pip install -r /tmp/requirements.txt
 
 VOLUME ["/app"]
 WORKDIR "/app"
