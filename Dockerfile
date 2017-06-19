@@ -34,10 +34,10 @@ RUN apt-get update && \
         zlib1g-dev && \
 
     # install pyenv
-    git clone https://github.com/pyenv/pyenv.git ~/.pyenv
-    echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ~/.bashrc
-    echo 'export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.bashrc
-    echo 'eval "$(pyenv init -)"' >> ~/.bashrc
+    git clone https://github.com/pyenv/pyenv.git ~/.pyenv \
+    echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ~/.bashrc \
+    echo 'export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.bashrc \
+    echo 'eval "$(pyenv init -)"' >> ~/.bashrc \
 
     # and some basic cleanup
     apt-get autoclean && \
