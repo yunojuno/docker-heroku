@@ -18,6 +18,7 @@ RUN apt-get update && \
     # extensions that may be loaded in subsequent images.
     apt-get install -y \
         build-essential \
+        gettext \
         libbz2-dev \
         libexpat1-dev \
         libgdbm-dev \
