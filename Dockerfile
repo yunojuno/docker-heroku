@@ -30,6 +30,7 @@ RUN apt-get update && \
         libssl-dev \
         mercurial \
         python-dev \
+        python3-dev \
         tk8.5-dev \
         zlib1g-dev && \
 
