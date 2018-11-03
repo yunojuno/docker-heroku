@@ -13,7 +13,7 @@ RUN apt-get update && apt-get install -y \
     python3-distutils \
     python3-pip \
     zlib1g-dev \
-    && rm -rf /var/lib/apt/lists/* \
-    && pip3 install -U pip pipenv
+    && rm -rf /var/lib/apt/lists/*
 
-ENTRYPOINT ["bash"]
+# install pipenv
+RUN set -ex && pip3 install pipenv
