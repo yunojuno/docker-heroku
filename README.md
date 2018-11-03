@@ -1,4 +1,4 @@
-# heroku16-python
+# Heroku18 Image Builder
 
 Dockerfile for building container for running Django applications on the
 Heroku-18 stack.
