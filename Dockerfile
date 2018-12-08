@@ -9,6 +9,7 @@ ENV LC_ALL C.UTF-8
 
 # install minimal deps required to build pylibmc
 RUN apt-get update && apt-get install -y \
+    gettext \
     libmemcached-dev \
     python3-distutils \
     python3-pip \
