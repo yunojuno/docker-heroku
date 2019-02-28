@@ -7,6 +7,11 @@ LABEL maintainer "YunoJuno <code@yunojuno.com>"
 ENV LANG C.UTF-8
 ENV LC_ALL C.UTF-8
 
+# Add deadsnakes PPA to get latest version of python
+RUN apt-get update \
+    && apt-get install -y software-properties-common \
+    && add-apt-repository ppa:deadsnakes/ppa
+
 # install minimal deps required to build pylibmc and update Python3
 RUN apt-get update && apt-get install -y \
     gettext \
