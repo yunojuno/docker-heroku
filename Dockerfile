@@ -13,7 +13,7 @@ RUN apt-get update && apt-get install -y \
     libmemcached-dev \
     python3-distutils \
     python3-pip \
-    python37 \
+    python3.7 \
     zlib1g-dev \
     && rm -rf /var/lib/apt/lists/* \
     && rm /usr/bin/python3 && ln -s /usr/bin/python3.7 /usr/bin/python3 \
