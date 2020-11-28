@@ -13,16 +13,17 @@ ENV DEBIAN_FRONTEND noninteractive
 # Add deadsnakes PPA to get latest version of python
 RUN apt-get update \
     && apt-get install -y software-properties-common \
-    && add-apt-repository ppa:deadsnakes/ppa
+    && add-apt-repository ppa:deadsnakes/ppa \
+    && apt-get update
 
 # install minimal deps required to build pylibmc and update Python3
 RUN apt-get update && apt-get install -y \
     gettext \
     libmemcached-dev \
-    python3-distutils \
     python3-pip \
     python3.9 \
     python3.9-dev \
+    python3.9-distutils \
     zlib1g-dev \
     && rm -rf /var/lib/apt/lists/* \
     && rm /usr/bin/python3 && ln -s /usr/bin/python3.9 /usr/bin/python3 \
