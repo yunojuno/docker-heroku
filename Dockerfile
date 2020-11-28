@@ -1,5 +1,5 @@
 # Dockerfile used to build Heroku-18 stack container.
-FROM heroku/heroku:18
+FROM heroku/heroku:20
 
 LABEL maintainer "YunoJuno <code@yunojuno.com>"
 
