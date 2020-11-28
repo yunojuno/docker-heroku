@@ -21,11 +21,11 @@ RUN apt-get update && apt-get install -y \
     libmemcached-dev \
     python3-distutils \
     python3-pip \
-    python3.8 \
-    python3.8-dev \
+    python3.9 \
+    python3.9-dev \
     zlib1g-dev \
     && rm -rf /var/lib/apt/lists/* \
-    && rm /usr/bin/python3 && ln -s /usr/bin/python3.8 /usr/bin/python3 \
+    && rm /usr/bin/python3 && ln -s /usr/bin/python3.9 /usr/bin/python3 \
     && python3 --version
 
 # install pipenv
