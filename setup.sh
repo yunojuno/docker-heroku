@@ -35,6 +35,8 @@ apt-get install -y --no-install-recommends \
 # python or pip from a Heroku hosted S3 bucket.
 add-apt-repository ppa:deadsnakes/ppa
 apt-get update
+# NB: Updating Python? Update Docker custom-tag in GitHub Action
+# workflow and throughout this setup script.
 apt-get install -y --no-install-recommends \
     python3.9 \
     python3.9-dev \
