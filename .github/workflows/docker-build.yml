@@ -66,7 +66,7 @@ jobs:
           # latest version of base images.
           pull: true
           # Push image only when on master.
-          push: ${{ github.ref != 'refs/heads/master' }}
+          push: ${{ github.ref == 'refs/heads/master' }}
           # Use Docker Meta to set the tags & OCI Image Format labels.
           tags: ${{ steps.docker_meta.outputs.tags }}
           labels: ${{ steps.docker_meta.outputs.labels }}
