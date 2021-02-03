@@ -1,11 +1,11 @@
-"""
-Dockerfile for yunojuno/heroku
+# Dockerfile for yunojuno/heroku
+#
+# Read setup.sh for a better rundown.
+# 
+# Images get tagged with the Python major version:
+#
+#    e.g yunojuno/heroku:3.9-latest
 
-These images get tagged with the Python major version:
-
-    e.g yunojuno/heroku:3.9-latest
-
-"""
 FROM heroku/heroku:20
 
 LABEL maintainer "YunoJuno <code@yunojuno.com>"
