@@ -6,7 +6,14 @@ because it means we lean on them for security updates to the underlying stack.
 
 ## Images
 
-| Dockerfile             | repo/image:tag       |
-|------------------------|----------------------|
-| `heroku-18/Dockerfile` | `yunojuno/heroku:18` |
-| `heroku-20/Dockerfile` | `yunojuno/heroku:20` |
+| Dockerfile             | Base             | repo/image:tag               |
+|------------------------|------------------|------------------------------|
+| `Dockerfile`           | heroku/heroku:20 | `yunojuno/heroku:3.9-latest` |
+
+## CI
+
+GitHub Actions runs our CI and automatically builds and pushes the generated image
+on all pushes to master, and on a scheduled basis daily.
+
+PRs also run the build, but just to check that it can succesfully built - the
+resulting image does not result in a pushed image.
