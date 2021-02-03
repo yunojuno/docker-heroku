@@ -1,24 +1,19 @@
-# Heroku18 Image Builder
+# YunoJuno Heroku Stack Images
 
-Dockerfile for building container for running Django applications on the
-Heroku-18 stack.
+Holds the Docker recipes for building YunoJuno's Heroku stack images, which we
+use during development & testing. Production uses Heroku's buildpack system
+because it means we lean on them for security updates to the underlying stack.
 
-## Use Case
+## Images
 
-This Dockerfile is used as a base build for python applications that run
-on the Heroku-18 stack.
+| Dockerfile             | Base               | repo/image:tag               |
+|------------------------|--------------------|------------------------------|
+| `Dockerfile`           | `heroku/heroku:20` | `yunojuno/heroku:3.9-latest` |
 
-As an example, this is our project Dockerfile:
+## CI
 
-```
-FROM yunojuno/heroku:latest
+GitHub Actions runs our CI and automatically builds and pushes the generated image
+on all pushes to master, and on a scheduled basis daily.
 
-# add local project requirements
-COPY Pipfile* ./
-RUN  pipenv install --dev
-
-VOLUME ["/app"]
-WORKDIR /app
-EXPOSE 5000
-
-```
+PRs also run the build, but just to check that it can succesfully built - the
+resulting image does not result in a pushed image.
