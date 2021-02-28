@@ -11,13 +11,13 @@ export DEBIAN_FRONTEND=noninteractive
 
 # Install packages for local/ci
 # =============================
-# Add apt repo software-properties-common \
-# Build tooling autoconf \                                  
-# Build tooling build-essential \                           
-# Translations gettext \                                   
-# Memcached (pylibmc) libmemcached-dev \                          
-# FB's fast file watcher watchman \                                  
-# ?? zlib1g-dev                                  
+# Add apt repo: software-properties-common
+# Build tooling: autoconf
+# Build tooling: build-essential
+# Translations: gettext
+# Compile Memcached (pylibmc): libmemcached-dev
+# FB's fast file watcher: watchman
+# Compression lib: zlib1g-dev
 apt-get update
 apt-get install -y --no-install-recommends \
     software-properties-common \
@@ -56,7 +56,7 @@ ln -s /usr/bin/python3.9 /usr/bin/python3
 # issues early before Heroku upgrade. This is at the expense of the
 # odd failed build in prod, but this is extremely rare and we can
 # override the buildpack fairly easily to sort any issues.
-pip3 install --upgrade setuptools pip pipenv
+pip3 install --upgrade setuptools pip pipenv poetry
 
 # Remove other pip binaries to reduce confusion over
 # which one should actually be used.
@@ -92,4 +92,7 @@ echo "  $(pip --version)"
 echo "pipenv:"
 echo "  - $(which pipenv)"
 echo "  - $(pipenv --version)"
+echo "poetry:"
+echo "  - $(which poetry)"
+echo "  - $(poetry --version)"
 echo
