@@ -92,7 +92,6 @@ echo "  $(pip --version)"
 echo "pipenv:"
 echo "  - $(which pipenv)"
 echo "  - $(pipenv --version)"
-echo
 echo "poetry:"
 echo "  - $(which poetry)"
 echo "  - $(poetry --version)"
