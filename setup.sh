@@ -35,8 +35,10 @@ apt-get install -y --no-install-recommends \
 # python or pip from a Heroku hosted S3 bucket.
 add-apt-repository ppa:deadsnakes/ppa
 apt-get update
-# NB: Updating Python? Update Docker custom-tag in GitHub Action
-# workflow and throughout this setup script.
+# NB: Updating Python?
+#   1) Update Docker custom-tag in GitHub Action workflow
+#   2) Update throughout this script
+#   3) Update FROM tags downstream (e.g yunojuno/platform)
 apt-get install -y --no-install-recommends \
     python3.9 \
     python3.9-dev \
@@ -49,14 +51,14 @@ ln -s /usr/bin/python3.9 /usr/bin/python
 ln -s /usr/bin/python3.9 /usr/bin/python3
 
 # Upgrade Python-related packages to their latest versions. This
-# actually doesn't match what the buildpack in production does,
-# as that pins versions of setuptools, pip and pipenv. But we don't
-# have a good way to stay in-line with these release numbers so
-# instead we install the latest and that at least helps us catch
-# issues early before Heroku upgrade. This is at the expense of the
-# odd failed build in prod, but this is extremely rare and we can
-# override the buildpack fairly easily to sort any issues.
-pip3 install --upgrade setuptools pip pipenv poetry
+# actually doesn't match what the buildpacks in production do, as
+# they pins versions of setuptools, pip. But we don't have a good
+# way to stay in-line with these release numbers so instead we
+# install the latest and that at least helps us catch issues early
+# before Heroku upgrade. This is at the expense of the odd failed
+# build in prod, but this is extremely rare and we can override the
+# buildpack fairly easily to sort any issues.
+pip3 install --upgrade setuptools pip poetry
 
 # Remove other pip binaries to reduce confusion over
 # which one should actually be used.
@@ -89,9 +91,6 @@ echo "  - $(python3.9 --version)"
 echo "pip:"
 echo "  $(which pip)"
 echo "  $(pip --version)"
-echo "pipenv:"
-echo "  - $(which pipenv)"
-echo "  - $(pipenv --version)"
 echo "poetry:"
 echo "  - $(which poetry)"
 echo "  - $(poetry --version)"
