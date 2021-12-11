@@ -60,7 +60,13 @@ ln -s /usr/bin/python3.10 /usr/bin/python3
 # build in prod, but this is extremely rare and we can override the
 # buildpack fairly easily to sort any issues.
 python -m ensurepip --upgrade
-pip3 install --upgrade setuptools pip poetry
+pip3 install --upgrade setuptools pip
+
+# do not install poetry using pip - its dependencies cause conflicts with
+# ours. Installing this way defaults to installing the binary in the local
+# user's ~/.local/ folder - which isn't on the PATH.
+curl -sSL https://install.python-poetry.org | POETRY_HOME=/etc/poetry python -
+cp /etc/poetry/bin/poetry /usr/bin/poetry
 
 # Remove other pip binaries to reduce confusion over
 # which one should actually be used.
