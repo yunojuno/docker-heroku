@@ -40,15 +40,16 @@ apt-get update
 #   2) Update throughout this script
 #   3) Update FROM tags downstream (e.g yunojuno/platform)
 apt-get install -y --no-install-recommends \
-    python3.9 \
-    python3.9-dev \
-    python3-pip
+    python3.10 \
+    python3.10-dev \
+    python3.10-distutils \
+    python3.10-venv  # includes ensurepip
 
 # Relink default binaries to new Python install
 rm /usr/bin/python
 rm /usr/bin/python3
-ln -s /usr/bin/python3.9 /usr/bin/python
-ln -s /usr/bin/python3.9 /usr/bin/python3
+ln -s /usr/bin/python3.10 /usr/bin/python
+ln -s /usr/bin/python3.10 /usr/bin/python3
 
 # Upgrade Python-related packages to their latest versions. This
 # actually doesn't match what the buildpacks in production do, as
@@ -58,6 +59,7 @@ ln -s /usr/bin/python3.9 /usr/bin/python3
 # before Heroku upgrade. This is at the expense of the odd failed
 # build in prod, but this is extremely rare and we can override the
 # buildpack fairly easily to sort any issues.
+python -m ensurepip --upgrade
 pip3 install --upgrade setuptools pip poetry
 
 # Remove other pip binaries to reduce confusion over
@@ -85,9 +87,9 @@ echo "  - $(python --version)"
 echo "python3:"
 echo "  - $(which python3)"
 echo "  - $(python3 --version)"
-echo "python3.9:"
-echo "  - $(which python3.9)"
-echo "  - $(python3.9 --version)"
+echo "python3.10:"
+echo "  - $(which python3.10)"
+echo "  - $(python3.10 --version)"
 echo "pip:"
 echo "  $(which pip)"
 echo "  $(pip --version)"

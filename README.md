@@ -9,6 +9,7 @@ because it means we lean on them for security updates to the underlying stack.
 | Dockerfile             | Base               | repo/image:tag               |
 |------------------------|--------------------|------------------------------|
 | `Dockerfile`           | `heroku/heroku:20` | `yunojuno/heroku:3.9-latest` |
+| `Dockerfile`           | `heroku/heroku:20` | `yunojuno/heroku:3.10-latest` |
 
 ## CI
 
