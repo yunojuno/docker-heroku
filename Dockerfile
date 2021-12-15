@@ -1,7 +1,7 @@
 # Dockerfile for yunojuno/heroku
 #
 # Read setup.sh for a better rundown.
-# 
+#
 # Images get tagged with the Python major version:
 #
 #    e.g yunojuno/heroku:3.9-latest
