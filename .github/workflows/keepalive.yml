@@ -1,0 +1,25 @@
+# GitHub Workflow that automatically commits an empty
+# commit to the master branch if the branch has not seen
+# any activity in the past 50 days.
+#
+# "Why?!" I hear you cry. Because otherwise GitHub silently
+# stops running scheduled workflows on the repository and
+# given this repositories purpose is to keep our Docker base
+# images updated, that is a significant problem.
+name: Keepalive auto-commit
+on:
+  schedule:
+    - cron: "0 0 * * *"
+
+jobs:
+  keepalive-autocommit:
+    name: Keepalive auto-commit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: gautamkrishnar/keepalive-workflow@1b33e4ef553c59eef0e3450666408021f4b0f456 # v1.0.9 - keep pinned for security.
+        with:
+          commit_message: Keepalive auto-commit
+          committer_username: yunojuno
+          committer_email: code@yunojuno.com
+          time_elapsed: 50  # days
