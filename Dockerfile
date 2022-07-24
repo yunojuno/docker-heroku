@@ -4,9 +4,9 @@
 #
 # Images get tagged with the Python major version:
 #
-#    e.g yunojuno/heroku:3.9-latest
+#    e.g yunojuno/heroku:3.10-latest
 
-FROM heroku/heroku:20
+FROM heroku/heroku:22
 
 LABEL maintainer "YunoJuno <code@yunojuno.com>"
 
