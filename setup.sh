@@ -16,7 +16,6 @@ export DEBIAN_FRONTEND=noninteractive
 # Build tooling: build-essential
 # Translations: gettext
 # Compile Memcached (pylibmc): libmemcached-dev
-# FB's fast file watcher: watchman
 # Compression lib: zlib1g-dev
 apt-get update
 apt-get install -y --no-install-recommends \
@@ -25,7 +24,6 @@ apt-get install -y --no-install-recommends \
     build-essential \
     gettext \
     libmemcached-dev \
-    watchman \
     zlib1g-dev
 
 # Install latest Python. We use the deadsnakes ppa to get the
@@ -33,9 +31,9 @@ apt-get install -y --no-install-recommends \
 # copying the style in the Heroku buildpack because it's vastly
 # simpler and means we don't have to mess about with installing
 # python or pip from a Heroku hosted S3 bucket.
-add-apt-repository ppa:deadsnakes/ppa
+add-apt-repository ppa:deadsnakes
 apt-get update
-# NB: Updating Python?
+# NB: Are you updating Python version?
 #   1) Update Docker custom-tag in GitHub Action workflow
 #   2) Update throughout this script
 #   3) Update FROM tags downstream (e.g yunojuno/platform)
@@ -43,13 +41,20 @@ apt-get install -y --no-install-recommends \
     python3.10 \
     python3.10-dev \
     python3.10-distutils \
-    python3.10-venv  # includes ensurepip
+    python3.10-venv
+
 
 # Relink default binaries to new Python install
 rm /usr/bin/python
 rm /usr/bin/python3
 ln -s /usr/bin/python3.10 /usr/bin/python
 ln -s /usr/bin/python3.10 /usr/bin/python3
+
+# We can't use -m ensurepip as Debian strips that module
+# from the Py3.10 library it supports, so we use the get-pip.py
+# supported install process instead.
+curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
+python3 get-pip.py
 
 # Upgrade Python-related packages to their latest versions. This
 # actually doesn't match what the buildpacks in production do, as
@@ -59,7 +64,7 @@ ln -s /usr/bin/python3.10 /usr/bin/python3
 # before Heroku upgrade. This is at the expense of the odd failed
 # build in prod, but this is extremely rare and we can override the
 # buildpack fairly easily to sort any issues.
-python -m ensurepip --upgrade
+#python3 -m ensurepip --upgrade
 pip3 install --upgrade setuptools pip wheel
 
 # do not install poetry using pip - its dependencies cause conflicts with
