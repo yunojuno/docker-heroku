@@ -52,4 +52,4 @@ jobs:
           # Use Docker Meta to set the tags & OCI Image Format labels.
           tags: ${{ steps.docker_meta.outputs.tags }}
           labels: ${{ steps.docker_meta.outputs.labels }}
-          extra-arguments: --no-cache
+          no-cache: true
