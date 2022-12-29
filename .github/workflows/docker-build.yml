@@ -27,13 +27,9 @@ jobs:
         # labels. See more below.
       - name: Instantiate Docker Meta
         id: docker_meta
-        # Hash is pinned to v1.11.0 for security.
-        uses: crazy-max/ghaction-docker-meta@9ae6899cfa6d691ad29d6fc0a228f276a16f5d44
+        uses: docker/metadata-action@v4
         with:
           images: yunojuno/heroku
-          tag-sha: true
-          # We tag our images with the major version of Python.
-          tag-custom: 3.9-latest
 
       - name: Login to DockerHub
         uses: docker/login-action@v1
