@@ -30,6 +30,13 @@ jobs:
         uses: docker/metadata-action@v4
         with:
           images: yunojuno/heroku
+          tags: |
+            type=sha
+            type=schedule
+            type=ref,event=branch
+            type=ref,event=tag
+            type=ref,event=pr
+            type=raw,value=3.10-latest
 
       - name: Login to DockerHub
         uses: docker/login-action@v1
