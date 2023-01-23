@@ -19,6 +19,11 @@ jobs:
     name: Build Docker image & push (if master)
     runs-on: ubuntu-latest
     steps:
+      # QEMU gives us ARM architecture support. GitHub Actions
+      # can only build amd64 versions & 386.
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
 
@@ -39,7 +44,7 @@ jobs:
             type=raw,value=3.10-latest
 
       - name: Login to DockerHub
-        uses: docker/login-action@v1
+        uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
@@ -56,3 +61,5 @@ jobs:
           tags: ${{ steps.docker_meta.outputs.tags }}
           labels: ${{ steps.docker_meta.outputs.labels }}
           no-cache: true
+          # Build for both architectures (devs have M1)
+          platforms: linux/amd64,linux/arm64
