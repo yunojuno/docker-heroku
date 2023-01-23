@@ -56,3 +56,5 @@ jobs:
           tags: ${{ steps.docker_meta.outputs.tags }}
           labels: ${{ steps.docker_meta.outputs.labels }}
           no-cache: true
+          # Build for both architectures (devs have M1)
+          platforms: linux/amd64,linux/arm64
