@@ -16,6 +16,7 @@ export DEBIAN_FRONTEND=noninteractive
 # Build tooling: build-essential
 # Translations: gettext
 # Compile Memcached (pylibmc): libmemcached-dev
+# Compile SAML support (xmlsec): pkg-config, xmlsec1, libxmlsec1-dev
 # Compression lib: zlib1g-dev
 apt-get update
 apt-get install -y --no-install-recommends \
@@ -24,6 +25,9 @@ apt-get install -y --no-install-recommends \
     build-essential \
     gettext \
     libmemcached-dev \
+    libxmlsec1-dev \
+    pkg-config \
+    xmlsec1 \
     zlib1g-dev
 
 # Install latest Python. We use the deadsnakes ppa to get the
