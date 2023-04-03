@@ -19,7 +19,7 @@ export DEBIAN_FRONTEND=noninteractive
 # Compile SAML support (xmlsec): pkg-config, xmlsec1, libxmlsec1-dev
 # Compression lib: zlib1g-dev
 apt-get update
-apt-get install -y --no-install-recommends \
+apt-get install -y --no-install-recommends  --fix-missing \
     software-properties-common \
     autoconf \
     build-essential \
