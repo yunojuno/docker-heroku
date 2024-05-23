@@ -42,20 +42,20 @@ apt-get update
 #   2) Update throughout this script
 #   3) Update FROM tags downstream (e.g yunojuno/platform)
 apt-get install -y --no-install-recommends \
-    python3.11 \
-    python3.11-dev \
-    python3.11-distutils \
-    python3.11-venv
+    python3.12 \
+    python3.12-dev \
+    python3.12-distutils \
+    python3.12-venv
 
 
 # Relink default binaries to new Python install
 rm /usr/bin/python
 rm /usr/bin/python3
-ln -s /usr/bin/python3.11 /usr/bin/python
-ln -s /usr/bin/python3.11 /usr/bin/python3
+ln -s /usr/bin/python3.12 /usr/bin/python
+ln -s /usr/bin/python3.12 /usr/bin/python3
 
 # We can't use -m ensurepip as Debian strips that module
-# from the Py3.11 library it supports, so we use the get-pip.py
+# from the Py3.12 library it supports, so we use the get-pip.py
 # supported install process instead.
 curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
 python3 get-pip.py
@@ -102,9 +102,9 @@ echo "  - $(python --version)"
 echo "python3:"
 echo "  - $(which python3)"
 echo "  - $(python3 --version)"
-echo "python3.11:"
-echo "  - $(which python3.11)"
-echo "  - $(python3.11 --version)"
+echo "python3.12:"
+echo "  - $(which python3.12)"
+echo "  - $(python3.12 --version)"
 echo "pip:"
 echo "  $(which pip)"
 echo "  $(pip --version)"

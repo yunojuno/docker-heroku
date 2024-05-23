@@ -11,6 +11,7 @@ because it means we lean on them for security updates to the underlying stack.
 | `Dockerfile`           | `heroku/heroku:20` | `yunojuno/heroku:3.9-latest` |
 | `Dockerfile`           | `heroku/heroku:22` | `yunojuno/heroku:3.10-latest` |
 | `Dockerfile`           | `heroku/heroku:22` | `yunojuno/heroku:3.11-latest` |
+| `Dockerfile`           | `heroku/heroku:22` | `yunojuno/heroku:3.12-latest` |
 
 ## CI
 
