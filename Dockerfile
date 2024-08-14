@@ -6,7 +6,7 @@
 #
 #    e.g yunojuno/heroku:3.12-latest
 
-FROM heroku/heroku:24
+FROM heroku/heroku:24-build
 
 LABEL maintainer="YunoJuno <code@yunojuno.com>"
 
