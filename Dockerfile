@@ -4,7 +4,7 @@
 #
 # Images get tagged with the Python major version:
 #
-#    e.g yunojuno/heroku:3.10-latest
+#    e.g yunojuno/heroku:3.12-latest
 
 FROM heroku/heroku:24
 
