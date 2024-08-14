@@ -15,4 +15,7 @@ ENV LC_ALL=C.UTF-8
 
 COPY setup.sh /tmp/setup.sh
 
+USER root
 RUN /tmp/setup.sh
+
+USER heroku
