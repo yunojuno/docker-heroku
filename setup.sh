@@ -44,13 +44,15 @@ apt-get update
 apt-get install -y --no-install-recommends \
     python3.12 \
     python3.12-dev \
-    python3.12-distutils \
     python3.12-venv
 
-
 # Relink default binaries to new Python install
-rm /usr/bin/python
-rm /usr/bin/python3
+if [ -f /usr/bin/python ]; then
+    rm /usr/bin/python
+fi
+if [ -f /usr/bin/python3 ]; then
+    rm /usr/bin/python3
+fi
 ln -s /usr/bin/python3.12 /usr/bin/python
 ln -s /usr/bin/python3.12 /usr/bin/python3
 
@@ -68,7 +70,6 @@ python3 get-pip.py
 # before Heroku upgrade. This is at the expense of the odd failed
 # build in prod, but this is extremely rare and we can override the
 # buildpack fairly easily to sort any issues.
-#python3 -m ensurepip --upgrade
 pip3 install --upgrade setuptools pip wheel
 
 # do not install poetry using pip - its dependencies cause conflicts with
@@ -79,8 +80,12 @@ cp /etc/poetry/bin/poetry /usr/bin/poetry
 
 # Remove other pip binaries to reduce confusion over
 # which one should actually be used.
-rm -rf /usr/bin/pip3
-rm -rf /usr/local/bin/pip3
+if [ -f /usr/bin/pip3 ]; then
+    rm -f /usr/bin/pip3
+fi
+if [ -d /usr/local/bin/pip3 ]; then
+    rm -rf /usr/local/bin/pip3
+fi
 
 # Cleanup to reduce image size
 rm -rf /root/*
