@@ -16,7 +16,7 @@ on:
 
 jobs:
   docker-build-push:
-    name: Build Docker image & push (if master)
+    name: Build Docker image & push
     runs-on: ubuntu-latest
     steps:
       # QEMU gives us ARM architecture support. GitHub Actions
