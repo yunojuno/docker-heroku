@@ -16,6 +16,7 @@ export DEBIAN_FRONTEND=noninteractive
 # Build tooling: build-essential
 # Translations: gettext
 # Compile Memcached (pylibmc): libmemcached-dev
+# Compile SAML support (xmlsec): pkg-config, xmlsec1, libxmlsec1-dev
 # Compression lib: zlib1g-dev
 apt-get update
 apt-get install -y --no-install-recommends \
@@ -24,6 +25,9 @@ apt-get install -y --no-install-recommends \
     build-essential \
     gettext \
     libmemcached-dev \
+    libxmlsec1-dev \
+    pkg-config \
+    xmlsec1 \
     zlib1g-dev
 
 # Install latest Python. We use the deadsnakes ppa to get the
@@ -42,10 +46,13 @@ apt-get install -y --no-install-recommends \
     python3.12-dev \
     python3.12-venv
 
-
 # Relink default binaries to new Python install
-rm /usr/bin/python
-rm /usr/bin/python3
+if [ -f /usr/bin/python ]; then
+    rm /usr/bin/python
+fi
+if [ -f /usr/bin/python3 ]; then
+    rm /usr/bin/python3
+fi
 ln -s /usr/bin/python3.12 /usr/bin/python
 ln -s /usr/bin/python3.12 /usr/bin/python3
 
@@ -53,7 +60,7 @@ ln -s /usr/bin/python3.12 /usr/bin/python3
 # from the Py3.12 library it supports, so we use the get-pip.py
 # supported install process instead.
 curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
-python3 get-pip.py
+python3 get-pip.py --break-system-packages
 
 # Upgrade Python-related packages to their latest versions. This
 # actually doesn't match what the buildpacks in production do, as
@@ -63,8 +70,7 @@ python3 get-pip.py
 # before Heroku upgrade. This is at the expense of the odd failed
 # build in prod, but this is extremely rare and we can override the
 # buildpack fairly easily to sort any issues.
-#python3 -m ensurepip --upgrade
-pip3 install --upgrade setuptools pip wheel
+pip3 install --upgrade setuptools pip wheel --break-system-packages
 
 # do not install poetry using pip - its dependencies cause conflicts with
 # ours. Installing this way defaults to installing the binary in the local
@@ -74,8 +80,12 @@ cp /etc/poetry/bin/poetry /usr/bin/poetry
 
 # Remove other pip binaries to reduce confusion over
 # which one should actually be used.
-rm -rf /usr/bin/pip3
-rm -rf /usr/local/bin/pip3
+if [ -f /usr/bin/pip3 ]; then
+    rm -f /usr/bin/pip3
+fi
+if [ -d /usr/local/bin/pip3 ]; then
+    rm -rf /usr/local/bin/pip3
+fi
 
 # Cleanup to reduce image size
 rm -rf /root/*
