@@ -3,10 +3,9 @@ name: Docker Build
 on:
   schedule:
     # Schedule runs run off HEAD commit on master.
-    # Run every 6 hours (4x/day) to keep yunojuno/heroku up to date
-    # with Heroku's base image. We run multiple times a day so that a
-    # single flaky failure does not hurt downstream delivery.
-    - cron:  '0 */6 * * *'
+    # Run once a day to keep yunojuno/heroku up to
+    # date with Heroku's base image.
+    - cron: "0 23 * * *"
 
   push:
     branches:
@@ -42,7 +41,7 @@ jobs:
             type=ref,event=branch
             type=ref,event=tag
             type=ref,event=pr
-            type=raw,value=3.12-latest
+            type=raw,value=3.12-latest,enable=${{ github.ref == 'refs/heads/master' }}
 
       - name: Login to DockerHub
         uses: docker/login-action@v2
@@ -56,8 +55,8 @@ jobs:
           # Pull forces Docker to check the network for the
           # latest version of base images.
           pull: true
-          # Push image only when on master.
-          push: ${{ github.ref == 'refs/heads/master' }}
+          # Always push images with appropriate tags
+          push: true
           # Use Docker Meta to set the tags & OCI Image Format labels.
           tags: ${{ steps.docker_meta.outputs.tags }}
           labels: ${{ steps.docker_meta.outputs.labels }}
