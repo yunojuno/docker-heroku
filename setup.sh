@@ -60,7 +60,7 @@ ln -s /usr/bin/python3.12 /usr/bin/python3
 # from the Py3.12 library it supports, so we use the get-pip.py
 # supported install process instead.
 curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
-python3 get-pip.py
+python3 get-pip.py --break-system-packages
 
 # Upgrade Python-related packages to their latest versions. This
 # actually doesn't match what the buildpacks in production do, as
@@ -70,7 +70,7 @@ python3 get-pip.py
 # before Heroku upgrade. This is at the expense of the odd failed
 # build in prod, but this is extremely rare and we can override the
 # buildpack fairly easily to sort any issues.
-pip3 install --upgrade setuptools pip wheel
+pip3 install --upgrade setuptools pip wheel --break-system-packages
 
 # do not install poetry using pip - its dependencies cause conflicts with
 # ours. Installing this way defaults to installing the binary in the local
