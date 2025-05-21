@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# Debug shell version
+echo "Shell version: $BASH_VERSION"
+
 set -euo pipefail
 
 # Redirect stderr to stdout since tracing/apt-get/dpkg
@@ -12,28 +15,11 @@ export DEBIAN_FRONTEND=noninteractive
 # Install packages for local/ci
 # =============================
 apt-get update
-apt-get install -y --no-install-recommends \
-    # General build help
-    software-properties-common \
-    pkg-config \
-    build-essential \
-    autoconf \
-    # Translation tooling
-    gettext \
-    # SAML support
-    xmlsec1 \
-    libxmlsec1-dev \
-    # Image support
-    zlib1g-dev \
-    # For runnning the state transitions graphing
-    graphviz \
-    # For building pikepdf
-    libqpdf-dev \
-    # For building reportlab
-    libfreetype6-dev \
-    # Misc tools
-    vim \
-    curl
+
+# Install all packages from the packages.txt file
+# This uses a single apt-get command for efficiency while keeping comments
+# in a separate file for clarity
+cat /tmp/packages.txt | grep -v "^#" | xargs apt-get install -y --no-install-recommends
 
 # Install latest Python. We use the deadsnakes ppa to get the
 # latest patch version of our major python version rather than
@@ -42,14 +28,12 @@ apt-get install -y --no-install-recommends \
 # python or pip from a Heroku hosted S3 bucket.
 add-apt-repository ppa:deadsnakes
 apt-get update
+
 # NB: Are you updating Python version?
 #   1) Update Docker custom-tag in GitHub Action workflow
 #   2) Update throughout this script
 #   3) Update FROM tags downstream (e.g yunojuno/platform)
-apt-get install -y --no-install-recommends \
-    python3.12 \
-    python3.12-dev \
-    python3.12-venv
+apt-get install -y --no-install-recommends python3.12 python3.12-dev python3.12-venv
 
 # Relink default binaries to new Python install
 if [ -f /usr/bin/python ]; then

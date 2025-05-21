@@ -13,9 +13,10 @@ LABEL maintainer="YunoJuno <code@yunojuno.com>"
 ENV LANG=C.UTF-8
 ENV LC_ALL=C.UTF-8
 
+COPY packages.txt /tmp/packages.txt
 COPY setup.sh /tmp/setup.sh
 
 USER root
-RUN /tmp/setup.sh
+RUN bash /tmp/setup.sh
 
 USER heroku
