@@ -1,0 +1,31 @@
+# System packages from Ubuntu's repositories.
+# NB: Don't put Python here, we install from a different repo.
+
+# General build help
+software-properties-common
+pkg-config
+build-essential
+autoconf
+
+# Translation tooling
+gettext
+
+# SAML support
+xmlsec1
+libxmlsec1-dev
+
+# Image support
+zlib1g-dev
+
+# For running the state transitions graphing
+graphviz
+
+# For building pikepdf
+libqpdf-dev
+
+# For building reportlab
+libfreetype6-dev
+
+# Misc tools
+vim
+curl 
