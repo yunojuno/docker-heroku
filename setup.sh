@@ -11,24 +11,29 @@ export DEBIAN_FRONTEND=noninteractive
 
 # Install packages for local/ci
 # =============================
-# Add apt repo: software-properties-common
-# Build tooling: autoconf
-# Build tooling: build-essential
-# Translations: gettext
-# Compile Memcached (pylibmc): libmemcached-dev
-# Compile SAML support (xmlsec): pkg-config, xmlsec1, libxmlsec1-dev
-# Compression lib: zlib1g-dev
 apt-get update
 apt-get install -y --no-install-recommends \
+    # General build help
     software-properties-common \
-    autoconf \
-    build-essential \
-    gettext \
-    libmemcached-dev \
-    libxmlsec1-dev \
     pkg-config \
+    build-essential \
+    autoconf \
+    # Translation tooling
+    gettext \
+    # SAML support
     xmlsec1 \
-    zlib1g-dev
+    libxmlsec1-dev \
+    # Image support
+    zlib1g-dev \
+    # For runnning the state transitions graphing
+    graphviz \
+    # For building pikepdf
+    libqpdf-dev \
+    # For building reportlab
+    libfreetype6-dev \
+    # Misc tools
+    vim \
+    curl
 
 # Install latest Python. We use the deadsnakes ppa to get the
 # latest patch version of our major python version rather than
