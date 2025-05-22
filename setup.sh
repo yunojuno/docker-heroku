@@ -36,11 +36,7 @@ curl -sS https://bootstrap.pypa.io/get-pip.py -o /tmp/get-pip.py
 python3 /tmp/get-pip.py --break-system-packages --no-cache-dir
 
 pip3 install --upgrade --break-system-packages --no-cache-dir --no-compile \
-  setuptools pip wheel
-
-# Install Poetry without polluting pip packages
-curl -sSL https://install.python-poetry.org | POETRY_HOME=/etc/poetry python -
-cp /etc/poetry/bin/poetry /usr/bin/poetry
+  setuptools pip wheel poetry uv
 
 # Remove duplicate pip3 binaries
 rm -f /usr/bin/pip3 /usr/local/bin/pip3 || true
