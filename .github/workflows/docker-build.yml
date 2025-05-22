@@ -2,9 +2,7 @@ name: Docker Build
 
 on:
   schedule:
-    # Schedule runs run off HEAD commit on master.
-    # Run once a day to keep yunojuno/heroku up to
-    # date with Heroku's base image.
+    # Runs nightly to keep yunojuno/heroku in sync with Heroku’s base image
     - cron: "0 23 * * *"
 
   push:
@@ -14,25 +12,37 @@ on:
   pull_request:
     types: [opened, synchronize, reopened]
 
+# Cancel superseded builds on the same ref
+concurrency:
+  group: docker-build-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   docker-build-push:
     name: Build Docker image & push
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
+
     steps:
-      # QEMU gives us ARM architecture support. GitHub Actions
-      # can only build amd64 versions & 386.
+      # Fetch repository content
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      # QEMU provides multi-arch emulation
       - name: Set up QEMU
-        uses: docker/setup-qemu-action@v2
+        uses: docker/setup-qemu-action@v3
 
+      # Buildx = BuildKit + multi-arch + cache
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
+        uses: docker/setup-buildx-action@v3
+        with:
+          install: true
+          driver-opts: |
+            image=moby/buildkit:latest
 
-        # Docker Meta handles manipulating various GitHub
-        # Action contexts into sane Docker image tags &
-        # labels. See more below.
+      # Generate tags/labels from Git refs
       - name: Instantiate Docker Meta
         id: docker_meta
-        uses: docker/metadata-action@v4
+        uses: docker/metadata-action@v5
         with:
           images: yunojuno/heroku
           tags: |
@@ -43,23 +53,21 @@ jobs:
             type=ref,event=pr
             type=raw,value=3.12-latest,enable=${{ github.ref == 'refs/heads/master' }}
 
+      # Authenticate with Docker Hub
       - name: Login to DockerHub
-        uses: docker/login-action@v2
+        uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
 
+      # Build + push (with cache)
       - name: Build and push
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v5
         with:
-          # Pull forces Docker to check the network for the
-          # latest version of base images.
           pull: true
-          # Always push images with appropriate tags
           push: true
-          # Use Docker Meta to set the tags & OCI Image Format labels.
+          platforms: linux/amd64,linux/arm64
           tags: ${{ steps.docker_meta.outputs.tags }}
           labels: ${{ steps.docker_meta.outputs.labels }}
-          no-cache: true
-          # Build for both architectures (devs have M1)
-          platforms: linux/amd64,linux/arm64
+          cache-from: type=gha
+          cache-to: type=gha,mode=max

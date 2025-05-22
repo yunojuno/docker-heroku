@@ -8,15 +8,25 @@
 
 FROM heroku/heroku:24
 
-LABEL maintainer="YunoJuno <code@yunojuno.com>"
+# OCI-compliant metadata
+LABEL maintainer="YunoJuno <code@yunojuno.com>"            \
+      org.opencontainers.image.source="https://github.com/yunojuno/docker-heroku" \
+      org.opencontainers.image.licenses="MIT"
 
-ENV LANG=C.UTF-8
-ENV LC_ALL=C.UTF-8
+# Use bash + pipefail for all RUN instructions
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
+ENV LANG=C.UTF-8 \
+    LC_ALL=C.UTF-8
+
+# -------------------------------------------------------------------
+# Build stage
+# -------------------------------------------------------------------
 COPY packages.txt /tmp/packages.txt
-COPY setup.sh /tmp/setup.sh
+COPY setup.sh     /tmp/setup.sh
 
 USER root
 RUN bash /tmp/setup.sh
 
+# Switch back to the default non-root user provided by the base image
 USER heroku
