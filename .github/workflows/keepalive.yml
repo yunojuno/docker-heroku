@@ -8,6 +8,7 @@
 # images updated, that is a significant problem.
 name: Keepalive auto-commit
 on:
+  workflow_dispatch:
   schedule:
     - cron: "0 0 * * *"
 
