@@ -20,9 +20,11 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-      - name: Add empty commit
-        uses: EndBug/add-and-commit@v9
-        with:
-          default_author: github_actions
-          push: true
-          message: Keepalive auto-commit
+      - name: Configure Git
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+      - name: Create and push empty commit
+        run: |
+          git commit --allow-empty -m "Keepalive auto-commit"          
+          git push
