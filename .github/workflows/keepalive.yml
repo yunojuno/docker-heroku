@@ -17,7 +17,13 @@ jobs:
     name: Keepalive auto-commit
     runs-on: ubuntu-latest
     permissions:
-      actions: write
+      contents: write
     steps:
       - uses: actions/checkout@v4
       - uses: gautamkrishnar/keepalive-workflow@v2
+        with:
+          use_api: false
+          commit_message: Keepalive auto-commit
+          committer_username: yunojuno
+          committer_email: code@yunojuno.com
+          time_elapsed: 50 # days
