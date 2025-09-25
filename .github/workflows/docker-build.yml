@@ -3,8 +3,9 @@ name: Docker Build
 on:
   schedule:
     # Schedule runs run off HEAD commit on master.
-    # Run every 6 hours (4x/day) to keep yunojuno/heroku up to
-    # date with Heroku's base image. We run multiple times a day so that a single flaky failure does not hurt downstream delivery.
+    # Run every 6 hours (4x/day) to keep yunojuno/heroku up to date
+    # with Heroku's base image. We run multiple times a day so that a
+    # single flaky failure does not hurt downstream delivery.
     - cron:  '0 */6 * * *'
 
   push:
