@@ -7,6 +7,9 @@ pkg-config
 build-essential
 autoconf
 
+# Locale support
+locales
+
 # Translation tooling
 gettext
 
@@ -26,6 +29,11 @@ libqpdf-dev
 # For building reportlab
 libfreetype6-dev
 
+# For lxml
+libxml2-dev
+libxslt1-dev
+
 # Misc tools
 vim
-curl 
+curl
+git

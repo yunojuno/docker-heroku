@@ -19,21 +19,24 @@ apt-get update -qq
 grep -v '^#' /tmp/packages.txt | xargs apt-get install ${APT_FLAGS}
 
 # -------------------------------------------------------------------
-# Python 3.12 from deadsnakes PPA
+# Python 3.13 from deadsnakes PPA
 # -------------------------------------------------------------------
 add-apt-repository -y ppa:deadsnakes
 apt-get update -qq
-apt-get install ${APT_FLAGS} python3.12 python3.12-dev python3.12-venv
+apt-get install ${APT_FLAGS} python3.13 python3.13-dev python3.13-venv
 
 # Make python/python3 point to the new interpreter
-ln -sf /usr/bin/python3.12 /usr/bin/python
-ln -sf /usr/bin/python3.12 /usr/bin/python3
+ln -sf /usr/bin/python3.13 /usr/bin/python
+ln -sf /usr/bin/python3.13 /usr/bin/python3
+
+
+# Install Task (taskfile.dev)
+curl -sL https://taskfile.dev/install.sh | sh -s -- -d -b /usr/local/bin
 
 # -------------------------------------------------------------------
-# pip + Poetry
+# pip + Poetry + uv
 # -------------------------------------------------------------------
-curl -sS https://bootstrap.pypa.io/get-pip.py -o /tmp/get-pip.py
-python3 /tmp/get-pip.py --break-system-packages --no-cache-dir
+curl -sS https://bootstrap.pypa.io/get-pip.py | python3.13 && pip install --break-system-packages --upgrade pip uv
 
 pip3 install --upgrade --break-system-packages --no-cache-dir --no-compile \
   setuptools pip wheel poetry uv
@@ -46,13 +49,12 @@ rm -f /usr/bin/pip3 /usr/local/bin/pip3 || true
 # -------------------------------------------------------------------
 rm -rf /root/* /tmp/* \
        /root/.cache/pip \
-       /var/cache/apt/archives/*.deb \
-       /var/lib/apt/lists/*
+       /var/cache/apt/archives/*.deb
 
 set +x
 echo
 echo "Python-ecosystem summary"
 echo "========================"
-for bin in python python3 python3.12 pip poetry; do
+for bin in python python3 python3.13 pip poetry; do
   echo "${bin}: $(command -v ${bin}) -> $(${bin} --version 2>&1)"
 done

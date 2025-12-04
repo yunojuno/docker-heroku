@@ -8,10 +8,14 @@
 
 FROM heroku/heroku:24
 
+# For Heroku-24 and newer, the build image sets a non-root default `USER`.
+# https://github.com/heroku/heroku-buildpack-python/blob/main/builds/Dockerfile#L8C1-L8C75
+USER root
+
 # OCI-compliant metadata
-LABEL maintainer="YunoJuno <code@yunojuno.com>"            \
-      org.opencontainers.image.source="https://github.com/yunojuno/docker-heroku" \
-      org.opencontainers.image.licenses="MIT"
+LABEL maintainer="YunoJuno <code@yunojuno.com>" \
+    org.opencontainers.image.source="https://github.com/yunojuno/docker-heroku" \
+    org.opencontainers.image.licenses="MIT"
 
 # Use bash + pipefail for all RUN instructions
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
@@ -19,14 +23,8 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 ENV LANG=C.UTF-8 \
     LC_ALL=C.UTF-8
 
-# -------------------------------------------------------------------
-# Build stage
-# -------------------------------------------------------------------
+
 COPY packages.txt /tmp/packages.txt
 COPY setup.sh     /tmp/setup.sh
 
-USER root
 RUN bash /tmp/setup.sh
-
-# Switch back to the default non-root user provided by the base image
-USER heroku

@@ -2,8 +2,11 @@ name: Docker Build
 
 on:
   schedule:
-    # Runs nightly to keep yunojuno/heroku in sync with Heroku’s base image
-    - cron: "0 23 * * *"
+    # Schedule runs run off HEAD commit on master.
+    # Run every 6 hours (4x/day) to keep yunojuno/heroku up to date
+    # with Heroku's base image. We run multiple times a day so that a
+    # single flaky failure does not hurt downstream delivery.
+    - cron: "0 */6 * * *"
 
   push:
     branches:
@@ -51,7 +54,7 @@ jobs:
             type=ref,event=branch
             type=ref,event=tag
             type=ref,event=pr
-            type=raw,value=3.12-latest,enable=${{ github.ref == 'refs/heads/master' }}
+            type=raw,value=3.13-latest,enable=${{ github.ref == 'refs/heads/master' }}
 
       # Authenticate with Docker Hub
       - name: Login to DockerHub
