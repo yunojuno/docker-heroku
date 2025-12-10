@@ -3,8 +3,6 @@
 # Provision the runtime environment for the yunojuno/heroku image.
 # Read comments inline for rationale.
 
-echo "Shell version: ${BASH_VERSION:-unknown}"
-
 set -euo pipefail
 exec 2>&1        # Redirect stderr to stdout for cleaner logs
 set -x            # Trace commands
