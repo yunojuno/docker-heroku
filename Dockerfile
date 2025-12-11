@@ -6,13 +6,25 @@
 #
 #    e.g yunojuno/heroku:3.12-latest
 
-FROM heroku/heroku:22
+FROM heroku/heroku:24
 
-LABEL maintainer="YunoJuno <code@yunojuno.com>"
+# For Heroku-24 and newer, the build image sets a non-root default `USER`.
+# https://github.com/heroku/heroku-buildpack-python/blob/main/builds/Dockerfile#L8C1-L8C75
+USER root
 
-ENV LANG=C.UTF-8
-ENV LC_ALL=C.UTF-8
+# OCI-compliant metadata
+LABEL maintainer="YunoJuno <code@yunojuno.com>" \
+    org.opencontainers.image.source="https://github.com/yunojuno/docker-heroku" \
+    org.opencontainers.image.licenses="MIT"
 
-COPY setup.sh /tmp/setup.sh
+# Use bash + pipefail for all RUN instructions
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
-RUN /tmp/setup.sh
+ENV LANG=C.UTF-8 \
+    LC_ALL=C.UTF-8
+
+
+COPY packages.txt /tmp/packages.txt
+COPY setup.sh     /tmp/setup.sh
+
+RUN bash /tmp/setup.sh
