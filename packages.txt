@@ -33,6 +33,9 @@ libfreetype6-dev
 libxml2-dev
 libxslt1-dev
 
+# Weasyprint system dependencies
+libharfbuzz-subset0
+
 # Misc tools
 vim
 curl
